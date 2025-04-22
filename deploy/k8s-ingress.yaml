@@ -1,0 +1,69 @@
+---
+apiVersion: configuration.konghq.com/v1
+config:
+  credentials: true
+  headers:
+  - Authorization
+  - X-Requested-With
+  - Content-Type
+  - x-token
+  - token
+  - target
+  - sign
+  - appKey
+  - appkey
+  - timestamp
+  - nonce
+  - siteid
+  max_age: 3600
+  methods:
+  - GET
+  - POST
+  - OPTIONS
+  - DELETE
+  - PUT
+  origins:
+  - '*'
+  preflight_continue: false
+kind: KongPlugin
+metadata:
+  name: allow-cors
+plugin: cors
+---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     konghq.com/plugins: allow-cors
+#     kubernetes.io/ingress.class: kong
+#   name: weather-mcp-service
+# spec:
+#   rules:
+#   - host: xxx
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: weather-mcp-service
+#           servicePort: 8080
+#         path: /weather/
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    konghq.com/plugins: allow-cors
+    kubernetes.io/ingress.class: kong
+  name: weather-mcp-service
+spec:
+  ingressClassName: kong
+  rules:
+  - host: xxx
+    http:
+      paths:
+      - path: /weather/
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: weather-mcp-service
+            port:
+              number: 8080
