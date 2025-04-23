@@ -5,10 +5,10 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
-	"github.com/soulchildtc/mcp-server-weather/internal/config"
-	"github.com/soulchildtc/mcp-server-weather/internal/handler"
-	"github.com/soulchildtc/mcp-server-weather/internal/service"
-	"github.com/soulchildtc/mcp-server-weather/pkg/log"
+	"github.com/soulchildtc/mcp-server-demo/internal/config"
+	"github.com/soulchildtc/mcp-server-demo/internal/handler"
+	"github.com/soulchildtc/mcp-server-demo/internal/service"
+	"github.com/soulchildtc/mcp-server-demo/pkg/log"
 )
 
 func main() {

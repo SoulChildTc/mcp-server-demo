@@ -1,4 +1,4 @@
-module github.com/soulchildtc/mcp-server-weather
+module github.com/soulchildtc/mcp-server-demo
 
 go 1.24.1
 

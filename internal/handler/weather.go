@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/soulchildtc/mcp-server-weather/internal/service"
+	"github.com/soulchildtc/mcp-server-demo/internal/service"
 )
 
 type WeatherHandler struct {

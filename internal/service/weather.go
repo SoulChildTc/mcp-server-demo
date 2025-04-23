@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/soulchildtc/mcp-server-weather/internal/config"
-	"github.com/soulchildtc/mcp-server-weather/internal/model"
+	"github.com/soulchildtc/mcp-server-demo/internal/config"
+	"github.com/soulchildtc/mcp-server-demo/internal/model"
 )
 
 type WeatherService struct {

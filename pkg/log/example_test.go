@@ -3,7 +3,7 @@ package log_test
 import (
 	"os"
 
-	"github.com/soulchildtc/mcp-server-weather/pkg/log"
+	"github.com/soulchildtc/mcp-server-demo/pkg/log"
 )
 
 func Example() {
