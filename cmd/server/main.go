@@ -20,6 +20,7 @@ func main() {
 
 	// 初始化处理器
 	weatherHandler := handler.NewWeatherHandler(weatherService)
+	healthHandler := handler.NewHealthHandler()
 
 	// 创建 MCP 服务器
 	mcpServer := server.NewMCPServer(
@@ -49,7 +50,7 @@ func main() {
 	smartWeatherTool := mcp.NewTool("get_smart_weather",
 		mcp.WithDescription("智能查询天气，自动识别城市名称或经纬度坐标"),
 		mcp.WithString("query",
-			mcp.Description("查询条件，可以是城市名称（如 北京）或经纬度坐标（如 116.41,39.92）"),
+			mcp.Description("查询条件，可以是城市名称（如 北京）或经纬度坐标 (如 116.41,39.92)"),
 		),
 	)
 
@@ -60,36 +61,18 @@ func main() {
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// 创建 SSE 服务器
-
 	sseServer := server.NewSSEServer(mcpServer,
-		server.WithBaseURL("http://:8080"),
-		server.WithBasePath("/weather"),
+		server.WithBasePath("/weather/"),
 	)
 
-	// 创建自定义 HTTP 处理器，包含健康检查端点和 SSE 服务器
-	customHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// 处理健康检查请求
-		if r.URL.Path == "/health/live" {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"status":"UP"}`))
-			return
-		}
-
-		if r.URL.Path == "/health/ready" {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"status":"READY"}`))
-			return
-		}
-
-		// 其他请求交给 SSE 服务器处理
-		sseServer.ServeHTTP(w, r)
-	})
+	// 创建路由
+	srv := &http.ServeMux{}
+	srv.HandleFunc("/health", healthHandler.GetHealth)
+	srv.Handle("/weather/", sseServer)
 
 	// 启动服务器
 	log.Info("SSE server listening on :8080")
-	if err := http.ListenAndServe(":8080", customHandler); err != nil {
+	if err := http.ListenAndServe(":8080", srv); err != nil {
 		log.Fatal("服务器错误: %v", err)
 	}
 }
